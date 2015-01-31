@@ -1,4 +1,5 @@
 {
   "extends": "../.jshintrc",
-  "maxstatements": 20
+  "maxstatements": 20,
+  "expr": true
 }
