@@ -1,6 +1,6 @@
 {
   "name": "avery",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Immutable models with virtuals and validation.",
   "main": "dist/avery.js",
   "dependencies": {
