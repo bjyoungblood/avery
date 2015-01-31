@@ -16,9 +16,10 @@
     "sinon": "^1.12.2"
   },
   "scripts": {
-    "prepublish": "rm -r dist/ || true && node_modules/.bin/6to5 src/ --modules common --out-dir dist",
-    "test": "mocha --recursive --compilers js:6to5/register",
-    "lint": "jshint . && jscs -c .jscsrc ."
+    "prepublish": "make dist",
+    "test": "make test",
+    "test-cov": "make test-cov",
+    "lint": "make lint"
   },
   "repository": {
     "type": "git",
