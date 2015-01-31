@@ -1,0 +1,33 @@
+{
+  "name": "avery",
+  "version": "0.0.0",
+  "description": "Immutable models with virtuals and validation.",
+  "main": "dist/avery.js",
+  "dependencies": {
+    "immutable": "^3.6.2",
+    "joi": "^5.1.0",
+    "lodash": "^3.0.1"
+  },
+  "devDependencies": {
+    "6to5": "^3.2.0"
+  },
+  "scripts": {
+    "prepublish": "rm -r dist/ && node_modules/.bin/6to5 src/ --modules common --out-dir dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bjyoungblood/avery.git"
+  },
+  "keywords": [
+    "immutable",
+    "immutablejs",
+    "model"
+  ],
+  "author": "Ben Youngblood <bx.youngblood@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bjyoungblood/avery/issues"
+  },
+  "homepage": "https://github.com/bjyoungblood/avery"
+}
