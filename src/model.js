@@ -23,6 +23,8 @@ export default function create(options) {
     var virtualsUnique = _.intersection(_.keys(virtuals), _.keys(defaults)).length === 0;
     assert(virtualsUnique, 'Cannot have a virtual property with the name of an actual property');
     assert(_.isEqual(_.functions(virtuals), _.keys(virtuals)), 'All virtuals must be a function');
+  } else {
+    virtuals = {};
   }
 
   let RecordType = record(defaults, name);
