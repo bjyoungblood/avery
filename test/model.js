@@ -6,7 +6,7 @@ var expect = chai.expect;
 var sinon = require('sinon');
 var Joi = require('joi');
 
-var averyModel = require('../src/model');
+var averyModel = require('../dist/model');
 
 describe('AveryModel', function() {
   describe('#factory', function() {
