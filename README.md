@@ -1,5 +1,7 @@
 # Avery
 
+[![NPM](https://nodei.co/npm/avery.png)](https://npmjs.org/package/avery)
+
 Immutable models with virtuals and `Joi`-ful validation.
 
 ### API
