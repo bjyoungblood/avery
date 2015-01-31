@@ -6,16 +6,16 @@ var expect = chai.expect;
 var sinon = require('sinon');
 var Joi = require('joi');
 
-var model = require('../src/model');
+var averyModel = require('../src/model');
 
 describe('AveryModel', function() {
   describe('#factory', function() {
     it('throws with invalid params', function() {
-      expect(model).to.throw();
+      expect(averyModel).to.throw();
     });
 
     it('throws with missing name', function() {
-      expect(model.bind(null, {})).to.throw();
+      expect(averyModel.bind(null, {})).to.throw();
     });
 
     it('throws with invalid validate object', function() {
@@ -25,7 +25,7 @@ describe('AveryModel', function() {
         validate : 'test'
       };
 
-      expect(model.bind(null, params)).to.throw();
+      expect(averyModel.bind(null, params)).to.throw();
     });
 
     it('throws with a conflicting virtual', function() {
@@ -35,7 +35,7 @@ describe('AveryModel', function() {
         virtuals : { id : function() {} }
       };
 
-      expect(model.bind(null, params)).to.throw();
+      expect(averyModel.bind(null, params)).to.throw();
     });
 
     it('throws with a non-function virtual', function() {
@@ -45,7 +45,7 @@ describe('AveryModel', function() {
         virtuals : { value : 'test' }
       };
 
-      expect(model.bind(null, params)).to.throw();
+      expect(averyModel.bind(null, params)).to.throw();
     });
   });
 
@@ -64,7 +64,7 @@ describe('AveryModel', function() {
         return '' + this.get('name') + this.get('value');
       });
 
-      Model = model({
+      Model = averyModel({
         name : 'TheModel',
         defaults : {
           id : null,
@@ -192,6 +192,26 @@ describe('AveryModel', function() {
 
       expect(model.get('name')).to.equal('Name');
       expect(model).to.not.equal(model3);
+    });
+
+    it('works with no optional config items defined', function() {
+      var Model2 = averyModel({
+        name : 'TheModel',
+        defaults : {
+          id : null,
+          name : null,
+          value : null,
+        },
+      });
+
+      var model = new Model2({
+        id : 1,
+        name : 'Name',
+        value : 'value'
+      });
+
+      expect(model.get('name')).to.equal('Name');
+      expect(model.has('value')).to.be.true;
     });
   });
 });
