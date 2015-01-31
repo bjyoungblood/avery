@@ -2,23 +2,27 @@
 
 import _ from 'lodash';
 import Joi from 'joi';
-import { record } from 'immutable';
+import { Record as record } from 'immutable';
 import assert from 'assert';
 
 export default function create(options) {
 
+  assert(_.isObject(options), 'Model options must be an object');
+
   var { name, defaults, validate, virtuals } = options;
 
   assert(name, 'All models must be named');
-  assert(defaults, 'You must provide default values to a model');
+  assert(_.isObject(defaults), 'You must provide default values to a model');
 
   if (validate) {
+    assert(_.isObject(validate), 'validate must be an object');
     assert(validate.isJoi, 'validate must be a Joi object');
   }
 
   if (virtuals) {
     var virtualsUnique = _.intersection(_.keys(virtuals), _.keys(defaults)).length === 0;
     assert(virtualsUnique, 'Cannot have a virtual property with the name of an actual property');
+    assert(_.isEqual(_.functions(virtuals), _.keys(virtuals)), 'All virtuals must be a function');
   }
 
   let RecordType = record(defaults, name);
