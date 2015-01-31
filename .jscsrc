@@ -32,9 +32,8 @@
   "disallowMultipleLineStrings": true,
   "requireSpaceBeforeBlockStatements": true,
   "requireSpacesInConditionalExpression": true,
-  "requireSpacesInFunctionExpression": {
-    "beforeOpeningCurlyBrace": true,
-    "beforeOpeningRoundBrace": true
+  "requireSpacesInAnonymousFunctionExpression": {
+    "beforeOpeningCurlyBrace": true
   },
   "disallowMultipleVarDecl": true,
   "requireBlocksOnNewline": true,
@@ -62,7 +61,6 @@
   "validateParameterSeparator": ", ",
   "safeContextKeyword": ["self"],
   "requireCamelCaseOrUpperCaseIdentifiers": true,
-  "requireCapitalizedComments": true,
   "validateQuoteMarks": {
     "mark": "'",
     "escape": true
