@@ -2,7 +2,8 @@
   "esnext": true,
   "excludeFiles": [
     "dist/**",
-    "node_modules/**"
+    "node_modules/**",
+    "coverage/**"
   ],
   "fileExtensions": [".js"],
   "requireCurlyBraces": [
