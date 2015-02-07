@@ -29,7 +29,7 @@ export default function create(options) {
 
   let RecordType = record(defaults, name);
 
-  class MyModel extends RecordType {
+  class AveryModel extends RecordType {
     constructor(values) {
       super(values);
 
@@ -115,5 +115,8 @@ export default function create(options) {
     }
   }
 
-  return MyModel;
+  AveryModel.name = name;
+  AveryModel.validate = validate;
+
+  return AveryModel;
 }
