@@ -9,7 +9,7 @@ MOCHA_OPTS = --recursive
 
 export NODE_ENV = test
 
-.PHONY: build clean dist test test-cov lint styler
+.PHONY: build clean dist test test-cov lint
 
 build:
 	$(6TO5) src/ --modules common --out-dir dist
@@ -21,7 +21,7 @@ dist:
 	make clean
 	make build
 
-test: lint style
+test: lint
 	make build
 	$(MOCHA) $(MOCHA_OPTS)
 
