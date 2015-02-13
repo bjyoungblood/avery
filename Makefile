@@ -2,6 +2,8 @@
 MOCHA = node_modules/.bin/mocha
 _MOCHA = node_modules/.bin/_mocha
 ISTANBUL = node_modules/.bin/ISTANBUL
+JSCS = node_modules/.bin/jscs
+JSHINT = node_modules/.bin/jshint
 
 MOCHA_OPTS = --recursive
 
@@ -29,7 +31,5 @@ test-cov:
 	$(ISTANBUL) cover $(_MOCHA) -- $(MOCHA_OPTS)
 
 lint:
-	jshint .
-
-style:
-	jscs -c .jscsrc .
+	$(JSHINT) .
+	$(JSCS) -c .jscsrc .
