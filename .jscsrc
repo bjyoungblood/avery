@@ -1,74 +1,64 @@
 {
+  // General config
   "esnext": true,
+  "esprima": "./node_modules/esprima-fb",
+
+  // Files
+  "fileExtensions": [".js", ".jsx"],
   "excludeFiles": [
-    "dist/**",
     "node_modules/**",
-    "coverage/**"
+    "dist/**"
   ],
-  "fileExtensions": [".js"],
+
   "requireCurlyBraces": [
-    "if",
-    "else",
-    "for",
-    "while",
-    "do",
-    "try",
-    "catch"
+    // Excludes case and default from the default rule
+    "if", "else", "for", "while", "do", "try", "catch"
   ],
+
+  "requireSpaceBeforeBlockStatements": true,    // space before opening brace
+  "disallowNewlineBeforeBlockStatements": true, // opening brace on same line
+  "requireBlocksOnNewline": true,
+  "disallowEmptyBlocks": true,
+  "requireCapitalizedConstructors": true,
+
+  "disallowMultipleVarDecl": true,
+
+  "requireSpacesInsideArrayBrackets": "allButNested",
+  "requireSpacesInsideObjectBrackets": "allButNested",
+  "requireSpaceAfterObjectKeys": true,
+  "requireSpaceBeforeObjectValues": true,
+  "disallowQuotedKeysInObjects": "allButReserved",
+
   "requireSpaceAfterKeywords": [
-    "do",
-    "for",
-    "if",
-    "else",
-    "switch",
-    "case",
-    "try",
-    "catch",
-    "void",
-    "while",
-    "with",
-    "return",
-    "typeof"
+    "do", "for", "if", "else", "switch", "case", "try", "catch", "void",
+    "while", "with", "return", "typeof"
   ],
-  "disallowMultipleLineStrings": true,
-  "requireSpaceBeforeBlockStatements": true,
-  "requireSpacesInConditionalExpression": true,
+
   "requireSpacesInAnonymousFunctionExpression": {
     "beforeOpeningCurlyBrace": true
   },
-  "disallowMultipleVarDecl": true,
-  "requireBlocksOnNewline": true,
-  "disallowEmptyBlocks": true,
-  "requireSpacesInsideObjectBrackets": "all",
-  "disallowQuotedKeysInObjects": true,
-  "requireSpaceAfterObjectKeys": true,
-  "requireSpaceBeforeObjectValues": true,
-  "requireCommaBeforeLineBreak": true,
-  "requireOperatorBeforeLineBreak": true,
-  "disallowSpaceBeforePostfixUnaryOperators": ["++", "--"],
-  "requireSpaceAfterPrefixUnaryOperators": ["!", "+", "~"],
+
+  "requireSpacesInConditionalExpression": true, // Spaces in ternaries
+  "disallowSpacesInCallExpression": true,       // myFunc(arg1), not myFunc (arg1)
+  "requireSpaceBetweenArguments": true,
   "requireSpaceBeforeBinaryOperators": true,
   "requireSpaceAfterBinaryOperators": true,
+  "disallowSpaceBeforePostfixUnaryOperators": ["++", "--"],
+  "requireSpaceAfterPrefixUnaryOperators": ["!", "+", "~"],
+  "requireDotNotation": true,
+
+  "requireCommaBeforeLineBreak": true,
+  "requireOperatorBeforeLineBreak": true,
+
   "disallowMultipleLineBreaks": true,
   "disallowTrailingWhitespace": true,
-  "requireLineBreakAfterVariableAssignment": true,
+
   "requireLineFeedAtFileEnd": true,
-  "requireCapitalizedConstructors": true,
-  "requireDotNotation": true,
-  "requireSpaceAfterLineComment": true,
-  "disallowNewlineBeforeBlockStatements": true,
   "validateLineBreaks": "LF",
+  "requireSpaceAfterLineComment": { "allExcept": [ "#", "=" ] },
   "validateIndentation": 2,
-  "validateParameterSeparator": ", ",
-  "safeContextKeyword": ["self"],
-  "requireCamelCaseOrUpperCaseIdentifiers": true,
   "validateQuoteMarks": {
     "mark": "'",
-    "escape": true
-  },
-  "maximumLineLength": {
-    "value": 100,
-    "allowUrlComments": true,
-    "allowRegex": true
+    "escape" : true
   }
 }
