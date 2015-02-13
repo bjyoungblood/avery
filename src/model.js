@@ -115,7 +115,7 @@ export default function create(options) {
     }
   }
 
-  AveryModel.name = name;
+  AveryModel.modelName = name;
   AveryModel.validate = validate;
 
   return AveryModel;
