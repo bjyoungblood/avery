@@ -22,7 +22,7 @@ describe('factory', function() {
     expect(averyModel.bind(null, params)).to.throw();
   });
 
-  it('throws with a conflicting virtual', function() {
+  it('throws with a conflicting default and virtual', function() {
     var params = {
       defaults : { id : null },
       virtuals : { id : function() {} }

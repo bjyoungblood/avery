@@ -1,7 +1,7 @@
 6TO5 = node_modules/.bin/6to5
 MOCHA = node_modules/.bin/mocha
 _MOCHA = node_modules/.bin/_mocha
-ISTANBUL = node_modules/.bin/ISTANBUL
+ISTANBUL = node_modules/.bin/istanbul
 JSCS = node_modules/.bin/jscs
 JSHINT = node_modules/.bin/jshint
 
