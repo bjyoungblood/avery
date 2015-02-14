@@ -1,4 +1,3 @@
 instrumentation:
-  preload-sources: true
   excludes:
     - src/**

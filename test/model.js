@@ -8,81 +8,110 @@ var Joi = require('joi');
 
 var averyModel = require('../dist/model');
 
+describe('factory', function() {
+  it('throws with invalid params', function() {
+    expect(averyModel).to.throw();
+  });
+
+  it('throws with invalid validate object', function() {
+    var params = {
+      defaults : {},
+      validate : 'test'
+    };
+
+    expect(averyModel.bind(null, params)).to.throw();
+  });
+
+  it('throws with a conflicting default and virtual', function() {
+    var params = {
+      defaults : { id : null },
+      virtuals : { id : function() {} }
+    };
+
+    expect(averyModel.bind(null, params)).to.throw();
+  });
+
+  it('throws with a non-function virtual', function() {
+    var params = {
+      defaults : { id : null },
+      virtuals : { value : 'test' }
+    };
+
+    expect(averyModel.bind(null, params)).to.throw();
+  });
+});
+
 describe('AveryModel', function() {
-  describe('#factory', function() {
-    it('throws with invalid params', function() {
-      expect(averyModel).to.throw();
+
+  var Model;
+  var idValueVirtSpy;
+  var nameValueVirtSpy;
+
+  beforeEach(function() {
+    idValueVirtSpy = sinon.spy(function() {
+      return '' + this.get('id') + this.get('value');
     });
 
-    it('throws with missing name', function() {
-      expect(averyModel.bind(null, {})).to.throw();
+    nameValueVirtSpy = sinon.spy(function() {
+      return '' + this.get('name') + this.get('value');
     });
 
-    it('throws with invalid validate object', function() {
-      var params = {
-        name : 'Test',
-        defaults : {},
-        validate : 'test'
-      };
-
-      expect(averyModel.bind(null, params)).to.throw();
-    });
-
-    it('throws with a conflicting virtual', function() {
-      var params = {
-        name : 'Test',
-        defaults : { id : null },
-        virtuals : { id : function() {} }
-      };
-
-      expect(averyModel.bind(null, params)).to.throw();
-    });
-
-    it('throws with a non-function virtual', function() {
-      var params = {
-        name : 'Test',
-        defaults : { id : null },
-        virtuals : { value : 'test' }
-      };
-
-      expect(averyModel.bind(null, params)).to.throw();
+    Model = averyModel({
+      defaults : {
+        id : null,
+        name : null,
+        value : null,
+      },
+      validate : Joi.object().keys({
+        id : Joi.number().integer(),
+        name : Joi.string(),
+        value : Joi.any(),
+      }),
+      virtuals : {
+        idValue : idValueVirtSpy,
+        nameValue : nameValueVirtSpy,
+      }
     });
   });
 
-  describe('Instance', function() {
-
-    var Model;
-    var idValueVirtSpy;
-    var nameValueVirtSpy;
-
-    beforeEach(function() {
-      idValueVirtSpy = sinon.spy(function() {
-        return '' + this.get('id') + this.get('value');
-      });
-
-      nameValueVirtSpy = sinon.spy(function() {
-        return '' + this.get('name') + this.get('value');
-      });
-
-      Model = averyModel({
-        name : 'TheModel',
-        defaults : {
-          id : null,
-          name : null,
-          value : null,
-        },
-        validate : Joi.object().keys({
-          id : Joi.number().integer(),
-          name : Joi.string(),
-          value : Joi.any(),
-        }),
-        virtuals : {
-          idValue : idValueVirtSpy,
-          nameValue : nameValueVirtSpy,
-        }
-      });
+  it('is immutable', function() {
+    var model = new Model({
+      id : 1,
+      name : 'Name',
+      value : 'MyValue',
     });
 
+    var model2 = model.set('name', 'not name');
+
+    expect(model.get('name')).to.equal('Name');
+    expect(model).to.not.equal(model2);
+
+    var model3 = model.remove('name');
+
+    expect(model.get('name')).to.equal('Name');
+    expect(model).to.not.equal(model3);
+  });
+
+  it('works with no optional config items defined', function() {
+    var Model2 = averyModel({
+      defaults : {
+        id : null,
+        name : null,
+        value : null,
+      },
+    });
+
+    var model = new Model2({
+      id : 1,
+      name : 'Name',
+      value : 'value'
+    });
+
+    expect(model.get('name')).to.equal('Name');
+    expect(model.has('value')).to.be.true;
+  });
+
+  describe('setters and getters', function() {
     it('sets and gets', function() {
       var model = new Model({
         id : 1,
@@ -94,7 +123,9 @@ describe('AveryModel', function() {
       expect(model.get('name')).to.equal('Name');
       expect(model.get('value')).to.equal('MyValue');
     });
+  });
 
+  describe('validation', function() {
     it('isValid returns correctly', function() {
       var valid = new Model({
         id : 1,
@@ -112,7 +143,9 @@ describe('AveryModel', function() {
 
       expect(invalid.isValid()).to.be.false;
     });
+  });
 
+  describe('virtuals', function() {
     it('virtuals return correct values', function() {
       var model = new Model({
         id : 1,
@@ -174,44 +207,6 @@ describe('AveryModel', function() {
       });
 
       expect(model.remove.bind(model, 'idValue')).to.throw();
-    });
-
-    it('is immutable', function() {
-      var model = new Model({
-        id : 1,
-        name : 'Name',
-        value : 'MyValue',
-      });
-
-      var model2 = model.set('name', 'not name');
-
-      expect(model.get('name')).to.equal('Name');
-      expect(model).to.not.equal(model2);
-
-      var model3 = model.remove('name');
-
-      expect(model.get('name')).to.equal('Name');
-      expect(model).to.not.equal(model3);
-    });
-
-    it('works with no optional config items defined', function() {
-      var Model2 = averyModel({
-        name : 'TheModel',
-        defaults : {
-          id : null,
-          name : null,
-          value : null,
-        },
-      });
-
-      var model = new Model2({
-        id : 1,
-        name : 'Name',
-        value : 'value'
-      });
-
-      expect(model.get('name')).to.equal('Name');
-      expect(model.has('value')).to.be.true;
     });
   });
 });

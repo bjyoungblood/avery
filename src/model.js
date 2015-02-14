@@ -5,31 +5,30 @@ import Joi from 'joi';
 import { Record as record } from 'immutable';
 import assert from 'assert';
 
-export default function create(options) {
+const optionsSchema = Joi.object().keys({
+  defaults : Joi.object().unknown().required(),
+  validate : Joi.object().unknown().optional().default(Joi.any()),
+  virtuals : Joi.object().unknown().pattern(/.+/, Joi.func()).optional().default({}),
+});
 
-  assert(_.isObject(options), 'Model options must be an object');
+export default function factory(options) {
 
-  var { name, defaults, validate, virtuals } = options;
+  let valid = Joi.validate(options, optionsSchema);
 
-  assert(name, 'All models must be named');
-  assert(_.isObject(defaults), 'You must provide default values to a model');
-
-  if (validate) {
-    assert(_.isObject(validate), 'validate must be an object');
-    assert(validate.isJoi, 'validate must be a Joi object');
+  if (valid.error) {
+    throw valid.error;
   }
 
-  if (virtuals) {
-    var virtualsUnique = _.intersection(_.keys(virtuals), _.keys(defaults)).length === 0;
-    assert(virtualsUnique, 'Cannot have a virtual property with the name of an actual property');
-    assert(_.isEqual(_.functions(virtuals), _.keys(virtuals)), 'All virtuals must be a function');
-  } else {
-    virtuals = {};
-  }
+  let { defaults, validate, virtuals } = valid.value;
 
-  let RecordType = record(defaults, name);
+  assert(validate.isJoi, 'validate must be a Joi object');
 
-  class AveryModel extends RecordType {
+  let allKeys = _.keys(defaults).concat(_.keys(virtuals));
+  let unique = allKeys.length === _.unique(allKeys).length;
+
+  assert(unique, 'Attribute names must be unique');
+
+  class AveryModel extends record(defaults) {
     constructor(values) {
       super(values);
 
@@ -37,35 +36,8 @@ export default function create(options) {
     }
 
     init() {
-      this._validate();
+      this._isValid = null;
       this._cachedVirtuals = {};
-    }
-
-    _validate() {
-      if (! validate) {
-        this._isValid = true;
-        return;
-      }
-
-      Joi.validate(this.toObject(), validate, (err, value) => {
-        if (err) {
-          this._isValid = false;
-        } else {
-          this._isValid = true;
-        }
-      });
-    }
-
-    isValid() {
-      return this._isValid;
-    }
-
-    _getVirtual(key) {
-      if (! this._cachedVirtuals.hasOwnProperty(key)) {
-        this._cachedVirtuals[key] = virtuals[key].apply(this);
-      }
-
-      return this._cachedVirtuals[key];
     }
 
     has(key) {
@@ -104,6 +76,28 @@ export default function create(options) {
       return newRecord;
     }
 
+    _validate() {
+      Joi.validate(this.toObject(), validate, (err, value) => {
+        this._isValid = ! err;
+      });
+    }
+
+    isValid() {
+      if (this._isValid === null) {
+        this._validate();
+      }
+
+      return this._isValid;
+    }
+
+    _getVirtual(key) {
+      if (! this._cachedVirtuals.hasOwnProperty(key)) {
+        this._cachedVirtuals[key] = virtuals[key].apply(this);
+      }
+
+      return this._cachedVirtuals[key];
+    }
+
     __ensureOwner(ownerId) {
       var sup = super.__ensureOwner(ownerId);
       if (sup === this) {
@@ -115,8 +109,8 @@ export default function create(options) {
     }
   }
 
-  AveryModel.modelName = name;
   AveryModel.validate = validate;
+  AveryModel.virtuals = virtuals;
 
   return AveryModel;
 }

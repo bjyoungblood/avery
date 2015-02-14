@@ -12,6 +12,9 @@
   "devDependencies": {
     "6to5": "^3.2.0",
     "chai": "^1.10.0",
+    "esprima-fb": "^12001.1.0-dev-harmony-fb",
+    "jscs": "^1.11.3",
+    "jshint": "^2.6.0",
     "mocha": "^2.1.0",
     "sinon": "^1.12.2"
   },
