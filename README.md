@@ -20,9 +20,7 @@ anything else.
 
 var Avery = require('avery');
 
-var User = Avery.Model({
-  name : 'User',
-
+class User extends Avery.Model({
   defaults : {
     id : null,
     email : null,
@@ -45,8 +43,13 @@ var User = Avery.Model({
       return this.get('firstName') + ' ' + this.get('lastName');
     }
   }
+}) {
 
-});
+  myMethod() {
+    return this.get('fullName');
+  }
+
+};
 
 var myUser = new User({
   id : 1,
