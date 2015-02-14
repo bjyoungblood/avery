@@ -22,11 +22,11 @@ var Avery = require('avery');
 
 class User extends Avery.Model({
   defaults : {
-    id : null,
-    email : null,
-    password : null,
-    firstName : null,
-    lastName : null
+    id : undefined,
+    email : undefined,
+    password : undefined,
+    firstName : undefined,
+    lastName : undefined
   },
 
   validate : Joi.object().keys({
